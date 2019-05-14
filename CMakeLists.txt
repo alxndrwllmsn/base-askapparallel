@@ -76,5 +76,5 @@ set (_modules askapparallel)
 # add some more tests and sub-directories
 
 foreach (module ${_modules})
-	add_subdirectory(${module})
+	add_subdirectory(askap/${module})
 endforeach (module)
