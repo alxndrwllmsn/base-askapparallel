@@ -48,12 +48,15 @@
 #include "askap/askap/AskapError.h"
 #include "casacore/casa/Utilities/Regex.h"
 #include "casacore/casa/BasicSL/String.h"
+#include "casacore/casa/BasicSL/STLIO.h"
 
 // Local package includes
 #include "askap/askapparallel/MPIComms.h"
 
 namespace askap {
 namespace askapparallel {
+
+using casacore::operator<<;
 
 /// Logger
 ASKAP_LOGGER(logger, ".askapparallel");
