@@ -16,11 +16,26 @@ option (CXX11 "Compile as C++11 if possible" YES)
 option (ENABLE_SHARED "Build shared libraries" YES)
 option (ENABLE_RPATH "Include rpath in executables and shared libraries" YES)
 
+# YandaSoft dependencies .. in order
+include(install_yanda_depends)
+
+set (EXTERNAL_INSTALL_DIR ${CMAKE_INSTALL_PREFIX})
+find_package(LofarBlob)
+if (NOT LofarBlob_FOUND)
+	install_yanda_depends(lofar-blob)
+	find_package(LofarBlob REQUIRED)
+endif ()
+
+find_package(Askap)
+if (NOT ASKAP_FOUND)
+	install_yanda_depends(base-askap)
+	find_package(Askap REQUIRED)
+endif ()
+
+find_package(CPPUnit)
+
 
 # find packages
-#find_package(Boost REQUIRED)
-find_package(LofarBlob REQUIRED)
-find_package(Askap REQUIRED)
 
 find_package(log4cxx REQUIRED)
 find_package(Casacore REQUIRED COMPONENTS  ms images mirlib coordinates fits lattices measures scimath scimath_f tables casa)
