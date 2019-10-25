@@ -12,6 +12,8 @@ else ()
 endif ()
 set (CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/askap-cmake")
 
+configure_file(askap_askapparallel.h.in askap_askapparallel.h)
+
 option (CXX11 "Compile as C++11 if possible" YES)
 option (ENABLE_SHARED "Build shared libraries" YES)
 option (ENABLE_RPATH "Include rpath in executables and shared libraries" YES)
@@ -71,6 +73,7 @@ endif()
 
 # include directories
 include_directories( ${CMAKE_SOURCE_DIR} )
+include_directories( ${CMAKE_CURRENT_BINARY_DIR} )
 include_directories (${Boost_INCLUDE_DIRS})
 add_definitions(-DHAVE_BOOST)
 include_directories(${log4cxx_INCLUDE_DIRS})
