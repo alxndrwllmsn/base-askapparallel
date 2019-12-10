@@ -37,6 +37,14 @@ target_link_libraries (
 	${MPI_LIBRARIES}
 )
 
+target_include_directories(askap_askapparallel PUBLIC
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
+  $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/askap>
+  $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
+  $<INSTALL_INTERFACE:include>
+  $<INSTALL_INTERFACE:include/askap>
+)
+
 install (
 	TARGETS askap_askapparallel
 	RUNTIME DESTINATION bin
