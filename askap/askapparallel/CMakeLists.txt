@@ -30,10 +30,10 @@ endif()
 
 target_link_libraries (
 	askap_askapparallel
+	lofar::Blob
+	askap::askap
 	${CASACORE_LIBRARIES}
 	${log4cxx_LIBRARY}
-	${ASKAP_LIBRARY}
-	${LofarBlob_LIBRARY}
 	${MPI_LIBRARIES}
 )
 
