@@ -37,6 +37,7 @@ target_link_libraries (
 	${MPI_LIBRARIES}
 )
 
+add_library(askap::parallel ALIAS askap_askapparallel)
 target_include_directories(askap_askapparallel PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/askap>
