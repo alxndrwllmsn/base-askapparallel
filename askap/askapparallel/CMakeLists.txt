@@ -1,7 +1,7 @@
 #
 # base/askapparallel
 #
-add_library(askap_askapparallel
+add_library(parallel
 AskapParallel.cc
 BlobIBufMW.cc
 BlobOBufMW.cc
@@ -15,21 +15,13 @@ BlobOBufMW.h
 MPIComms.h
 DESTINATION include/askap/askapparallel
 )
-if (MPI_FOUND)
-  if(MPI_COMPILE_FLAGS)
-    set_target_properties(askap_askapparallel  PROPERTIES
-    COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
-  endif()
 
-  if(MPI_LINK_FLAGS)
-    set_target_properties(askap_askapparallel PROPERTIES
-    LINK_FLAGS "${MPI_LINK_FLAGS}")
-  endif()
-
-endif()
+set_target_properties(parallel PROPERTIES
+    OUTPUT_NAME askap_askapparallel
+)
 
 target_link_libraries (
-	askap_askapparallel
+	parallel
 	lofar::Blob
 	askap::askap
 	${CASACORE_LIBRARIES}
@@ -37,17 +29,46 @@ target_link_libraries (
 	${MPI_LIBRARIES}
 )
 
-add_library(askap::parallel ALIAS askap_askapparallel)
-target_include_directories(askap_askapparallel PUBLIC
+add_library(askap::parallel ALIAS parallel)
+target_include_directories(parallel PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}/askap>
   $<BUILD_INTERFACE:${PROJECT_BINARY_DIR}>
   $<INSTALL_INTERFACE:include>
   $<INSTALL_INTERFACE:include/askap>
+  ${Boost_INCLUDE_DIRS}
+  ${log4cxx_INCLUDE_DIRS}
+  ${CASACORE_INCLUDE_DIRS}
+)
+target_compile_definitions(parallel PUBLIC
+  casa=casacore
+  HAVE_AIPSPP
+  HAVE_BOOST
+  HAVE_LOG4CXX
 )
 
+if (MPI_FOUND)
+  target_include_directories(parallel PUBLIC
+    ${MPI_INCLUDE_PATH}
+  )
+  target_compile_definitions(parallel PUBLIC
+    HAVE_MPI
+  )
+  if(MPI_COMPILE_FLAGS)
+    set_target_properties(parallel  PROPERTIES
+    COMPILE_FLAGS "${MPI_COMPILE_FLAGS}")
+  endif()
+
+  if(MPI_LINK_FLAGS)
+    set_target_properties(parallel PROPERTIES
+    LINK_FLAGS "${MPI_LINK_FLAGS}")
+  endif()
+
+endif()
+
 install (
-	TARGETS askap_askapparallel
+	TARGETS parallel
+	EXPORT askap-parallel-targets
 	RUNTIME DESTINATION bin
 	LIBRARY DESTINATION lib
 	ARCHIVE DESTINATION lib
