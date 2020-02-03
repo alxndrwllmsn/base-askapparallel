@@ -1,7 +1,5 @@
 cmake_minimum_required (VERSION 3.1.0)
 
-project(askap-parallel VERSION 0.0.1 LANGUAGES C CXX)
-
 
 if (EXISTS ${CMAKE_SOURCE_DIR}/askap-cmake)
     execute_process(COMMAND git pull 
@@ -10,9 +8,23 @@ else ()
     execute_process(COMMAND git clone https://bitbucket.csiro.au/scm/askapsdp/askap-cmake.git
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
 endif ()
+
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/askap-cmake")
+include(version_utils)
+get_version_string()
+
+
+project(askap-parallel VERSION ${VERSION_SHORT} LANGUAGES C CXX)
+
+# Required Version of ASKAP dependencies is the MAJOR and MINOR version
+# of this package. This allows the PATCH versions to change on everything
+# but the version number cannot be less or more than the current version
+# 
+set(REQUIRED_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
+
 
 configure_file(askap_askapparallel.h.in askap_askapparallel.h)
+configure_file(askap_askapparallel.cc.in ${CMAKE_CURRENT_SOURCE_DIR}/askap/askapparallel/askap_askapparallel.cc)
 
 option (CXX11 "Compile as C++11 if possible" YES)
 option (ENABLE_SHARED "Build shared libraries" YES)
@@ -20,7 +32,7 @@ option (ENABLE_RPATH "Include rpath in executables and shared libraries" YES)
 
 # YandaSoft dependencies .. in order
 find_package(lofar-blob REQUIRED)
-find_package(askap-askap REQUIRED)
+find_package(askap-askap ${REQUIRED_VERSION} REQUIRED)
 find_package(log4cxx REQUIRED)
 find_package(Casacore REQUIRED COMPONENTS  ms images mirlib coordinates fits lattices measures scimath scimath_f tables casa)
 find_package(CPPUnit)
