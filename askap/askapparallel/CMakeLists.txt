@@ -2,6 +2,7 @@
 # base/askapparallel
 #
 add_library(parallel
+askap_askapparallel.cc
 AskapParallel.cc
 BlobIBufMW.cc
 BlobOBufMW.cc

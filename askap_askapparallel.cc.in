@@ -1,0 +1,10 @@
+
+// std include
+#include <string>
+#include "askap_askapparallel.h"
+
+  /// @return version of the package
+std::string askap::getAskapPackageVersion_askapparallel() {
+    return "@VERSION_SHORT@";
+}
+
