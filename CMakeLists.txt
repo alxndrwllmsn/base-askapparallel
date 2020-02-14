@@ -23,8 +23,7 @@ project(askap-parallel VERSION ${VERSION_SHORT} LANGUAGES C CXX)
 set(REQUIRED_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
 
 
-configure_file(askap_askapparallel.h.in askap_askapparallel.h)
-configure_file(askap_askapparallel.cc.in ${CMAKE_CURRENT_SOURCE_DIR}/askap/askapparallel/askap_askapparallel.cc)
+configure_file(askap_askapparallel.cc.in askap/askapparallel/askap_askapparallel.cc)
 
 option (CXX11 "Compile as C++11 if possible" YES)
 option (ENABLE_SHARED "Build shared libraries" YES)

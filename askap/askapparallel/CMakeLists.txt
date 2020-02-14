@@ -2,7 +2,7 @@
 # base/askapparallel
 #
 add_library(parallel
-askap_askapparallel.cc
+${CMAKE_CURRENT_BINARY_DIR}/askap_askapparallel.cc
 AskapParallel.cc
 BlobIBufMW.cc
 BlobOBufMW.cc
