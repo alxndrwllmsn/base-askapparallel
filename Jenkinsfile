@@ -44,7 +44,7 @@ make
       }
     }
 
-    stage('Building Release)') {
+    stage('Building Release') {
       steps {
         dir(path: '.') {
           sh '''git fetch --tags
@@ -56,23 +56,9 @@ make
         }
       }
     }    
-    stage('Test') {
-     steps {
-        dir(path: '.') {
-          sh '''cd build
-ctest -T test --no-compress-output
-../askap-cmake/ctest2junit > ctest.xml
-          cp ctest.xml $WORKSPACE
-'''     }
-     }
-    }
-
   }
 
 post {
-        always {
-             junit 'ctest.xml'
-        }
         success {        
              mail to: "${env.EMAIL_TO}",
              from: "jenkins@csiro.au",
