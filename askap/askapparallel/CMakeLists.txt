@@ -30,6 +30,10 @@ target_link_libraries (
 	${MPI_LIBRARIES}
 )
 
+if (OPENMP_FOUND)
+    target_link_libraries(parallel PRIVATE OpenMP::OpenMP_CXX)
+endif (OPENMP_FOUND)
+
 add_library(askap::parallel ALIAS parallel)
 target_include_directories(parallel PUBLIC
   $<BUILD_INTERFACE:${PROJECT_SOURCE_DIR}>
