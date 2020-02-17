@@ -21,8 +21,7 @@ set_target_properties(parallel PROPERTIES
     OUTPUT_NAME askap_askapparallel
 )
 
-target_link_libraries (
-	parallel
+target_link_libraries ( parallel 
 	lofar::Blob
 	askap::askap
 	${CASACORE_LIBRARIES}
@@ -31,7 +30,7 @@ target_link_libraries (
 )
 
 if (OPENMP_FOUND)
-    target_link_libraries(parallel PRIVATE OpenMP::OpenMP_CXX)
+    target_link_libraries(parallel OpenMP::OpenMP_CXX)
 endif (OPENMP_FOUND)
 
 add_library(askap::parallel ALIAS parallel)
