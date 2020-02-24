@@ -1,5 +1,8 @@
 cmake_minimum_required (VERSION 3.12.0)
-
+option(UPDATE_CMAKE "Update the cmake modules" ON)
+ 
+if (UPDATE_CMAKE)
+# Reuse common cmake infrastructure
 
 if (EXISTS ${CMAKE_SOURCE_DIR}/askap-cmake)
     execute_process(COMMAND git pull 
@@ -7,6 +10,7 @@ if (EXISTS ${CMAKE_SOURCE_DIR}/askap-cmake)
 else ()	
     execute_process(COMMAND git clone https://bitbucket.csiro.au/scm/askapsdp/askap-cmake.git
 	WORKING_DIRECTORY ${CMAKE_SOURCE_DIR})
+endif ()
 endif ()
 
 set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/askap-cmake")
