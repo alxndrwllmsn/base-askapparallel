@@ -1,0 +1,17 @@
+get_filename_component(ASKAP_PARALLEL_CMAKE_DIR "${CMAKE_CURRENT_LIST_FILE}" PATH)
+
+include(CMakeFindDependencyMacro)
+find_dependency(lofar-blob)
+find_dependency(askap-askap)
+find_dependency(log4cxx)
+find_dependency(Casacore COMPONENTS ms images mirlib coordinates fits lattices measures scimath scimath_f tables casa)
+if ("@CPPUNIT_FOUND@")
+	find_dependency(CPPUnit)
+endif()
+if ("@MPI_FOUND@")
+	find_dependency(MPI)
+endif()
+
+if (NOT TARGET askap::parallel)
+	include("${ASKAP_PARALLEL_CMAKE_DIR}/askap-parallel-targets.cmake")
+endif()
