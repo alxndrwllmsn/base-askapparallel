@@ -17,8 +17,13 @@ set (CMAKE_MODULE_PATH "${CMAKE_SOURCE_DIR}/askap-cmake")
 include(version_utils)
 get_version_string()
 
+if (VERSION_SHORT)
+    project(askap-parallel VERSION ${VERSION_SHORT} LANGUAGES C CXX)
+else ()
+    project(askap-parallel VERSION 0.0.0 LANGUAGES C CXX)
+endif ()
 
-project(askap-parallel VERSION ${VERSION_SHORT} LANGUAGES C CXX)
+
 
 # Required Version of ASKAP dependencies is the MAJOR and MINOR version
 # of this package. This allows the PATCH versions to change on everything
