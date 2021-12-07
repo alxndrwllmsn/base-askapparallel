@@ -3,11 +3,7 @@ cmake_minimum_required (VERSION 3.12.0)
 include_guard()
 
 set (VERSION "1.2.0")
-if ( "${VERSION}" STREQUAL "")
-    project(base-askapparallel LANGUAGES C CXX)
-else()
-    project(base-askapparallel VERSION ${VERSION} LANGUAGES C CXX)
-endif()
+project(base-askapparallel VERSION ${VERSION} LANGUAGES C CXX)
 
 find_package(Git REQUIRED)
 
