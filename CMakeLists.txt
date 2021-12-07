@@ -2,18 +2,10 @@ cmake_minimum_required (VERSION 3.12.0)
  
 include_guard()
 
-set (VERSION "1.1.0")
-if ( "${VERSION}" STREQUAL "")
-    project(base-askapparallel LANGUAGES C CXX)
-else()
-    project(base-askapparallel VERSION ${VERSION} LANGUAGES C CXX)
-endif()
+set (VERSION "1.2.0")
+project(base-askapparallel VERSION ${VERSION} LANGUAGES C CXX)
 
 find_package(Git REQUIRED)
-
-option(IS_DEFAULT_VERSION "Create the .version file to make this build the default module" OFF )
-
-set (MODULE_NAME base-askapparallel)
 
 include(CheckCXXCompilerFlag)
 include (GNUInstallDirs)
@@ -36,17 +28,7 @@ else()
   message (STATUS "No cmake config overrides file specified, using defaults")
 endif()
 
-if ( "${CMAKE_PROJECT_NAME}" STREQUAL "base-askapparallel" )
-    # this cmake file is the top level cmakefile, for example it is not part of the askap-askapsoft build
-    message(STATUS "--- askap-analysis is a top level project")
-    set (BASE_INSTALL_PREFIX ${CMAKE_INSTALL_PREFIX} CACHE PATH "The original CMAKE_INSTALL_PREFIX passed in." FORCE)
-    set (CMAKE_INSTALL_PREFIX ${BASE_INSTALL_PREFIX}/${MODULE_NAME}/${BUILD_STR} CACHE PATH "Added module name and version to the install prefix." FORCE)
-else()
-    message(STATUS "--- askap-analysis is not a top level project")
-endif()
-
 message(STATUS "CMAKE_INSTALL_PREFIX is ${CMAKE_INSTALL_PREFIX}")
-message(STATUS "BASE_INSTALL_PREFIX is ${BASE_INSTALL_PREFIX}")
 
 # Declare all of sub repos and tools
 include(FetchContent)
