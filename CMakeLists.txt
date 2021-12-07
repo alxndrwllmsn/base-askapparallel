@@ -2,7 +2,7 @@ cmake_minimum_required (VERSION 3.12.0)
  
 include_guard()
 
-set (VERSION "1.1.0")
+set (VERSION "1.2.0")
 if ( "${VERSION}" STREQUAL "")
     project(base-askapparallel LANGUAGES C CXX)
 else()
