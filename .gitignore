@@ -1,2 +1,4 @@
 build
 askap-cmake
+_build
+_install
