@@ -42,6 +42,8 @@
 #include <fstream>
 #include <string>
 #include <libgen.h>
+#include <unistd.h>
+#include <sched.h>
 
 // ASKAPsoft includes
 #include "askap/askap/AskapLogging.h"
@@ -103,14 +105,29 @@ AskapParallel::AskapParallel(int argc, const char** argv)
     // Get program name
     const std::string progName = AskapParallel::getProgramName(argc, argv);
 
+    // Get how and where prog was initialized from 
+    const std::string progInit = AskapParallel::getProgramInit(argc, argv);
+
+    // Get host name on which this MPI process is running 
+    const std::string hostName = AskapParallel::getHostName();
+
+    // Get OpenMP Info 
+    const std::string openmpInfo = AskapParallel::getOpenMPInfo();
+
+    // Get core binding 
+    const std::string coreBinding = AskapParallel::getCoreBinding();
+
     if (isParallel()) {
         if (isMaster()) {
             ASKAPLOG_INFO_STR(logger, "ASKAP " << progName << " (parallel) running on " << itsNProcs
                                   << " nodes (master/master)");
+            ASKAPLOG_INFO_STR(logger, progInit);
+            ASKAPLOG_INFO_STR(logger, openmpInfo);
         } else {
             ASKAPLOG_INFO_STR(logger, "ASKAP " << progName << " (parallel) running on " << itsNProcs
                                   << " nodes (worker " << itsRank << ")");
         }
+        ASKAPLOG_INFO_STR(logger, coreBinding);
     } else {
         ASKAPLOG_INFO_STR(logger, "ASKAP " << progName << " (serial)");
     }
@@ -422,9 +439,137 @@ std::string AskapParallel::getProgramName(int argc, const char** argv)
         free(path);
         // No need to free bname, it is a pointer to somewhere in path
     }
-
     return "unknown";
 }
+
+std::string AskapParallel::getProgramInit(int argc, const char** argv)
+{
+	std::ostringstream os;
+	char cwd[PATH_MAX];
+	getcwd(cwd, PATH_MAX);
+    os << "Program called from " << cwd <<std::endl;
+    os << "Arguments: "
+    std::copy(argv, argv + argc, std::ostream_iterator<char *>(os, " "));
+    return os.string();
+}
+
+std::string AskapParallel::getHostName()
+{
+    char hnbuf[64];
+    memset(hnbuf, 0, sizeof(hnbuf));
+    gethostname(hnbuf, sizeof(hnbuf));
+    std::string hname(hnbuf);
+    return hname;
+}
+
+std::string AskapParallel::getOpenMPInfo() 
+{
+    std::string report
+#ifdef _OPENMP 
+    report = "OpenMP version : " + std::to_string(_OPENMP) + 
+        " OpenMP # threads " + std::to_string(omp_get_max_threads());
+#else 
+    report = "No OpenMP";
+#endif
+    return report;
+}
+
+
+#ifdef __APPLE__
+/// For OS X, missing sched_getaffinity so define it
+static inline void
+CPU_ZERO(cpu_set_t *cs) { cs->count = 0; }
+
+static inline void
+CPU_SET(int num, cpu_set_t *cs) { cs->count |= (1 << num); }
+
+static inline int
+CPU_ISSET(int num, cpu_set_t *cs) { return (cs->count & (1 << num)); }
+
+int sched_getaffinity(pid_t pid, size_t cpu_size, cpu_set_t *cs)
+{
+  int32_t core_count = 0;
+  size_t  len = sizeof(core_count);
+  int ret = sysctlbyname(SYSCTL_CORE_COUNT, &core_count, &len, 0, 0);
+  if (ret) {
+    printf("error while get core count %d\n", ret);
+    return -1;
+  }
+  cs->count = 0;
+  for (int i = 0; i < core_count; i++) {
+    cs->count |= (1 << i);
+  }
+  return 0;
+}
+#endif
+
+/// Borrowed from util-linux-2.13-pre7/schedutils/taskset.c 
+void cpuset_to_cstr(cpu_set_t *smask, char *str)
+{
+  char *ptr = str;
+  int i, j, entry_made = 0;
+  for (i = 0; i < CPU_SETSIZE; i++) {
+    if (CPU_ISSET(i, mask)) {
+      int run = 0;
+      entry_made = 1;
+      for (j = i + 1; j < CPU_SETSIZE; j++) {
+        if (CPU_ISSET(j, mask)) run++;
+        else break;
+      }
+      if (!run)
+        sprintf(ptr, "%d ", i);
+      else if (run == 1) {
+        sprintf(ptr, "%d,%d ", i, i + 1);
+        i++;
+      } else {
+        sprintf(ptr, "%d-%d ", i, i + run);
+        i += run;
+      }
+      while (*ptr != 0) ptr++;
+    }
+  }
+  ptr -= entry_made;
+  ptr = nullptr;
+}
+
+std::string AskapParallel::getCoreBinding()
+{
+#ifndef _OPENMP
+    if (!isParallel()) return "";
+#endif
+    std::string binding_report = "Core binding \n ";
+    cpu_set_t coremask;
+    char clbuf[7 * CPU_SETSIZE], hnbuf[64];
+    memset(clbuf, 0, sizeof(clbuf));
+    memset(hnbuf, 0, sizeof(hnbuf));
+    (void)gethostname(hnbuf, sizeof(hnbuf));
+#ifdef _OPENMP
+    #pragma omp parallel shared (binding_report) private(coremask, clbuf) 
+#endif
+    {
+        std::string result;
+        (void)sched_getaffinity(0, sizeof(coremask), &coremask);
+        cpuset_to_cstr(&coremask, clbuf);
+        if (isParallel()) {
+            result = "MPI Rank " + std::to_string(itsRank) + " ";
+            result += "on node " + std::string(hnbuf) + " : ";
+        }
+#ifdef _OPENMP
+        auto thread = omp_get_thread_num();
+        result +=" OMP Thread " + to_string(thread) + " : ";
+#endif
+        result += " Core affinity = " + string(clbuf) + " \n ";
+#ifdef _OPENMP 
+        #pragma omp critical 
+#endif 
+        {
+            binding_report +=result;
+        }
+    }
+}
+    return binding_report;
+}
+        
 
 } // End namespace askapparallel
 } // End namespace askap
