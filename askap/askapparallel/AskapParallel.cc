@@ -450,7 +450,7 @@ std::string AskapParallel::getProgramInit(int argc, const char** argv)
     os << "Program called from " << cwd <<std::endl;
     os << "Arguments: "
     std::copy(argv, argv + argc, std::ostream_iterator<char *>(os, " "));
-    return os.string();
+    return os.str();
 }
 
 std::string AskapParallel::getHostName()
@@ -464,7 +464,7 @@ std::string AskapParallel::getHostName()
 
 std::string AskapParallel::getOpenMPInfo() 
 {
-    std::string report
+    std::string report;
 #ifdef _OPENMP 
     report = "OpenMP version : " + std::to_string(_OPENMP) + 
         " OpenMP # threads " + std::to_string(omp_get_max_threads());
@@ -504,7 +504,7 @@ int sched_getaffinity(pid_t pid, size_t cpu_size, cpu_set_t *cs)
 #endif
 
 /// Borrowed from util-linux-2.13-pre7/schedutils/taskset.c 
-void cpuset_to_cstr(cpu_set_t *smask, char *str)
+void cpuset_to_cstr(cpu_set_t *mask, char *str)
 {
   char *ptr = str;
   int i, j, entry_made = 0;

@@ -191,17 +191,17 @@ class AskapParallel : public MPIComms {
         /// Return the host name on which an MPI rank is running
         ///
         /// @return The host name
-        std::string AskapParallel::getHostName();
+        std::string getHostName();
 
         /// Return OpenMP information
         ///
         /// @return string containing OpenMP information
-        std::string AskapParallel::getOpenMPInfo();
+        std::string getOpenMPInfo();
 
         /// Return the core binding of MPI and OpenMP threads
         ///
         /// @return string containing the core bindnign
-        std::string AskapParallel::getCoreBinding();
+        std::string getCoreBinding();
 
     protected:
         /// Rank of this process : 0 for the master, >0 for workers
