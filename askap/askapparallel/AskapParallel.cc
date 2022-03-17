@@ -44,6 +44,7 @@
 #include <libgen.h>
 #include <unistd.h>
 #include <sched.h>
+#include <algorithm>
 
 // ASKAPsoft includes
 #include "askap/askap/AskapLogging.h"
