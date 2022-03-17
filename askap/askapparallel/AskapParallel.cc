@@ -448,7 +448,7 @@ std::string AskapParallel::getProgramInit(int argc, const char** argv)
 	char cwd[PATH_MAX];
 	getcwd(cwd, PATH_MAX);
     os << "Program called from " << cwd <<std::endl;
-    os << "Arguments: "
+    os << "Arguments: ";
     std::copy(argv, argv + argc, std::ostream_iterator<char *>(os, " "));
     return os.str();
 }
@@ -556,9 +556,9 @@ std::string AskapParallel::getCoreBinding()
         }
 #ifdef _OPENMP
         auto thread = omp_get_thread_num();
-        result +=" OMP Thread " + to_string(thread) + " : ";
+        result +=" OMP Thread " + std::to_string(thread) + " : ";
 #endif
-        result += " Core affinity = " + string(clbuf) + " \n ";
+        result += " Core affinity = " + std::string(clbuf) + " \n ";
 #ifdef _OPENMP 
         #pragma omp critical 
 #endif 
@@ -566,7 +566,6 @@ std::string AskapParallel::getCoreBinding()
             binding_report +=result;
         }
     }
-}
     return binding_report;
 }
         
