@@ -36,7 +36,7 @@ include(FetchContent)
 # We need this before any other Fetch calls so we have the find_package routines available
 # -------- askap cmake modules --------
 FetchContent_Declare(askap-cmake
-  GIT_REPOSITORY    ssh://git@bitbucket.csiro.au:7999/askapsdp/askap-cmake.git
+  GIT_REPOSITORY    ${ASKAPSDP_GIT_URL}/askap-cmake.git
   GIT_TAG           ${ASKAP_CMAKE_TAG}
   SOURCE_DIR        askap-cmake
 )
@@ -53,28 +53,28 @@ message(STATUS "askap-cmake path is ${CMAKE_MODULE_PATH}")
 
 # -------- lofar common --------
 FetchContent_Declare(lofar-common
-  GIT_REPOSITORY    ssh://git@bitbucket.csiro.au:7999/askapsdp/lofar-common.git
+  GIT_REPOSITORY    ${ASKAPSDP_GIT_URL}/lofar-common.git
   GIT_TAG           ${LOFAR_COMMON_TAG}
   SOURCE_DIR        lofar-common
 )
 
 # -------- lofar blob --------
 FetchContent_Declare(lofar-blob
-  GIT_REPOSITORY    ssh://git@bitbucket.csiro.au:7999/askapsdp/lofar-blob.git
+  GIT_REPOSITORY    ${ASKAPSDP_GIT_URL}/lofar-blob.git
   GIT_TAG           ${LOFAR_BLOB_TAG}
   SOURCE_DIR        lofar-blob
 )
 
 # -------- base-askap --------
 FetchContent_Declare(base-askap
-  GIT_REPOSITORY    ssh://git@bitbucket.csiro.au:7999/askapsdp/base-askap.git
+  GIT_REPOSITORY    ${ASKAPSDP_GIT_URL}/base-askap.git
   GIT_TAG           ${BASE_ASKAP_TAG}
   SOURCE_DIR        base-askap
 )
 
 # -------- base-imagemath --------
 FetchContent_Declare(base-imagemath
-  GIT_REPOSITORY    ssh://git@bitbucket.csiro.au:7999/askapsdp/base-imagemath.git
+  GIT_REPOSITORY    ${ASKAPSDP_GIT_URL}/base-imagemath.git
   GIT_TAG           ${BASE_IMAGEMATH_TAG}
   SOURCE_DIR        base-imagemath
 )
