@@ -183,7 +183,7 @@ void MPIComms::send(const void* buf, size_t size, int dest, int tag, size_t comm
 
     // First send the size of the buffer.
     unsigned long lsize = size;  // Promote for simplicity
-    int result = MPI_Send(&lsize, 1, MPI_UNSIGNED_LONG, dest, tag, itsCommunicators[comm]);
+    int result = MPI_Ssend(&lsize, 1, MPI_UNSIGNED_LONG, dest, tag, itsCommunicators[comm]);
     checkError(result, "MPI_Send");
 
     // Send in chunks of size MAXINT until complete
