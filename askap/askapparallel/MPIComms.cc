@@ -184,7 +184,7 @@ void MPIComms::send(const void* buf, size_t size, int dest, int tag, size_t comm
     // First send the size of the buffer.
     unsigned long lsize = size;  // Promote for simplicity
     int result = MPI_Ssend(&lsize, 1, MPI_UNSIGNED_LONG, dest, tag, itsCommunicators[comm]);
-    checkError(result, "MPI_Send");
+    checkError(result, "MPI_Ssend");
 
     // Send in chunks of size MAXINT until complete
     size_t remaining = size;
@@ -195,16 +195,16 @@ void MPIComms::send(const void* buf, size_t size, int dest, int tag, size_t comm
         void* addr = addOffset(buf, offset);
 
         if (remaining >= c_maxint) {
-            result = MPI_Send(addr, c_maxint, MPI_BYTE,
+            result = MPI_Ssend(addr, c_maxint, MPI_BYTE,
                               dest, tag, itsCommunicators[comm]);
             remaining -= c_maxint;
         } else {
-            result = MPI_Send(addr, remaining, MPI_BYTE,
+            result = MPI_Ssend(addr, remaining, MPI_BYTE,
                               dest, tag, itsCommunicators[comm]);
             remaining = 0;
         }
 
-        checkError(result, "MPI_Send");
+        checkError(result, "MPI_Ssend");
     }
 
     ASKAPCHECK(remaining == 0, "MPIComms::send() Didn't send all data");
