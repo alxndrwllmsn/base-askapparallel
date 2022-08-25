@@ -1,8 +1,6 @@
 # GitLab CI script for base-askapparallel
 
-#image: registry.gitlab.com/askapsdp/yandasoft_image/all_yandasoft:1.1.x-latest
-#image: registry.gitlab.com/askapsdp/yandasoft_image/yandasoft
-image: csirocass/yandasoft:casacore3.5.0-mpich
+image: registry.gitlab.com/askapsdp/yandasoft_image/yandasoft:casacore3.5.0-mpich
 
 .common: {tags: [azure]}
 
