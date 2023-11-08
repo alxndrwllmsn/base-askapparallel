@@ -344,6 +344,10 @@ void MPIComms::checkError(const int error, const std::string location) const
                    << eclass << ": " << estring);
 }
 
+MPI_Comm MPIComms::getComm(size_t comm){
+    return itsCommunicator[comm];
+}
+
 #else
 
 MPIComms::MPIComms(int argc, char *argv[])
