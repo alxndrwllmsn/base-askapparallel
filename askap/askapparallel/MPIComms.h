@@ -146,6 +146,8 @@ class MPIComms {
         /// @return new communicator index
         virtual size_t createComm(const std::vector<int> &group, size_t comm = 0);
 
+        virtual MPI_Comm getComm(size_t comm);
+
     private:
         // Check for error status and handle accordingly
         void checkError(const int error, const std::string location) const;
