@@ -345,7 +345,7 @@ void MPIComms::checkError(const int error, const std::string location) const
 }
 
 MPI_Comm MPIComms::getComm(size_t comm){
-    return itsCommunicator[comm];
+    return itsCommunicators[comm];
 }
 
 #else
