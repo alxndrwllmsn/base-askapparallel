@@ -70,7 +70,8 @@ class MPIComms {
         /// @brief Request all nodes in the communictor group abort.
         /// @param[in] comm communicator index, defaults to 0 (copy of the default 
         /// world communicator)
-        virtual void abort(size_t comm = 0);
+        /// @param[in] err error code to return
+        virtual void abort(size_t comm = 0, int err = 1);
 
         /// @brief Barrier for synchronisation 
         /// @param[in] comm communicator index, defaults to 0 (copy of the default 
