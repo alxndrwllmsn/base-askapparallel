@@ -106,10 +106,10 @@ AskapParallel::AskapParallel(int argc, const char** argv)
     if (isParallel()) {
         if (isMaster()) {
             ASKAPLOG_INFO_STR(logger, "ASKAP " << progName << " (parallel) running on " << itsNProcs
-                                  << " nodes (master/master)");
+                                  << " MPI tasks (master)");
         } else {
             ASKAPLOG_INFO_STR(logger, "ASKAP " << progName << " (parallel) running on " << itsNProcs
-                                  << " nodes (worker " << itsRank << ")");
+                                  << " MPI tasks (worker " << itsRank << ")");
         }
     } else {
         ASKAPLOG_INFO_STR(logger, "ASKAP " << progName << " (serial)");
