@@ -1,5 +1,5 @@
 set ( ASKAP_CMAKE_TAG              tags/1.5.0      CACHE  STRING    "askap.cmake tools"                FORCE )
-set ( LOFAR_COMMON_TAG             tags/1.2.1      CACHE  STRING    "lofar-common version"             FORCE )
+set ( LOFAR_COMMON_TAG             f35117f80d12c9bd4a363c23fb00c8e0c49b1cee      CACHE  STRING    "lofar-common version"             FORCE )
 set ( LOFAR_BLOB_TAG               tags/1.3.1      CACHE  STRING    "lofar-blob version"               FORCE )
 set ( BASE_ASKAP_TAG               tags/1.7.2      CACHE  STRING    "base-askap version"               FORCE )
 set ( BASE_IMAGEMATH_TAG           tags/1.14.3     CACHE  STRING    "base-imagemath version"           FORCE )
