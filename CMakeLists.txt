@@ -2,6 +2,9 @@ cmake_minimum_required (VERSION 3.12.0)
  
 include_guard()
 
+set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_STANDARD_REQUIRED ON)
+
 set(VERSION "1.9.3")
 project(base-askapparallel VERSION ${VERSION} LANGUAGES C CXX)
 
@@ -96,7 +99,7 @@ set(REQUIRED_VERSION "${VERSION_MAJOR}.${VERSION_MINOR}")
 
 configure_file(askap_askapparallel.cc.in ${CMAKE_CURRENT_BINARY_DIR}/askap/askapparallel/askap_askapparallel.cc)
 
-option (CXX11 "Compile as C++11 if possible" YES)
+option (CXX11 "Compile as C++11 if possible" NO)
 option (ENABLE_SHARED "Build shared libraries" YES)
 option (ENABLE_RPATH "Include rpath in executables and shared libraries" YES)
 option (ENABLE_OPENMP "Build with OPENMP Support" NO)
@@ -146,7 +149,7 @@ option (BUILD_SHARED_LIBS "" YES)
 endif(ENABLE_SHARED)
 
 
-if (CASACORE3 OR CXX11)
+if (CXX11)
 	set(CMAKE_CXX_STANDARD 11)
 	set(CMAKE_CXX_STANDARD_REQUIRED ON)
 endif()
