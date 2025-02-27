@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # A list of specific version for the dependencies of this build.
 #
 # The contents here will aid in 'pinning' the contents of the build. Changing this file constitutes changing the build
