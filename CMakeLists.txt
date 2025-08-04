@@ -5,7 +5,7 @@ include_guard()
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
-set(VERSION "1.10.2")
+set(VERSION "1.10.3")
 project(base-askapparallel VERSION ${VERSION} LANGUAGES C CXX)
 
 find_package(Git REQUIRED)
