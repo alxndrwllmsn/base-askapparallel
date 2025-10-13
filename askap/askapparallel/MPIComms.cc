@@ -120,11 +120,11 @@ int MPIComms::nProcs(size_t comm) const
     return numtasks;
 }
 
-void MPIComms::abort(size_t comm)
+void MPIComms::abort(size_t comm, int err)
 {
     ASKAPDEBUGASSERT(comm < itsCommunicators.size());
     ASKAPDEBUGASSERT(itsCommunicators[comm] != MPI_COMM_NULL);
-    int result = MPI_Abort(itsCommunicators[comm], 0);
+    int result = MPI_Abort(itsCommunicators[comm], err);
     checkError(result, "MPI_Abort");
 }
 void MPIComms::barrier(size_t comm)
@@ -388,7 +388,7 @@ int MPIComms::nProcs(size_t) const
     return 1;
 }
 
-void MPIComms::abort(size_t)
+void MPIComms::abort(size_t, int)
 {
     exit(1);
 }
